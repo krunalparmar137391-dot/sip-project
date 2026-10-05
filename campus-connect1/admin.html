@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard | Campus Connect</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css">
+
+    <style>
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .sidebar {
+            transition: 0.3s;
+        }
+
+        .menu-item {
+            transition: 0.25s;
+        }
+
+        .menu-item:hover {
+            transform: translateX(5px);
+        }
+
+        .stat-card {
+            transition: 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .glass {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(15px);
+        }
+
+    </style>
+
+</head>
+
+
+<body class="bg-slate-100">
+
+
+<!-- SECURITY CHECK -->
+
+<script>
+
+    const role = localStorage.getItem("campusUserRole");
+
+    if (role !== "admin") {
+        window.location.href = "index.html";
+    }
+
+</script>
+
+
+<div class="flex min-h-screen">
+
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar w-64 bg-slate-950 text-white fixed h-screen">
+
+        <div class="p-6 border-b border-slate-800">
+
+            <h1 class="text-2xl font-bold">
+                Campus
+                <span class="text-purple-400">Connect</span>
+            </h1>
+
+            <p class="text-xs text-slate-400 mt-1">
+                Administration Panel
+            </p>
+
+        </div>
+
+
+        <nav class="p-4 space-y-2">
+
+            <a href="#"
+                class="menu-item flex items-center gap-3 p-3 rounded-lg bg-purple-600">
+                <i class="fa-solid fa-chart-line"></i>
+                Dashboard
+            </a>
+
+            <a href="#students"
+                class="menu-item flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800">
+                <i class="fa-solid fa-users"></i>
+                Students
+            </a>
+
+            <a href="#events"
+                class="menu-item flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800">
+                <i class="fa-solid fa-calendar-days"></i>
+                Events
+            </a>
+
+            <a href="#news"
+                class="menu-item flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800">
+                <i class="fa-solid fa-newspaper"></i>
+                News
+            </a>
+
+            <a href="#notes"
+                class="menu-item flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800">
+                <i class="fa-solid fa-book"></i>
+                Notes
+            </a>
+
+            <a href="#placements"
+                class="menu-item flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800">
+                <i class="fa-solid fa-briefcase"></i>
+                Placements
+            </a>
+
+            <a href="#clubs"
+                class="menu-item flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800">
+                <i class="fa-solid fa-people-group"></i>
+                Clubs
+            </a>
+
+            <a href="#lost"
+                class="menu-item flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800">
+                <i class="fa-solid fa-box"></i>
+                Lost & Found
+            </a>
+
+            <a href="#feedback"
+                class="menu-item flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800">
+                <i class="fa-solid fa-comments"></i>
+                Feedback
+            </a>
+
+            <a href="#mails"
+                class="menu-item flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800">
+                <i class="fa-solid fa-envelope"></i>
+                Student Mails
+            </a>
+
+        </nav>
+
+
+        <!-- LOGOUT -->
+
+        <div class="absolute bottom-5 left-4 right-4">
+
+            <button onclick="logout()"
+                class="w-full flex items-center justify-center gap-3 bg-red-500 hover:bg-red-600 p-3 rounded-lg">
+
+                <i class="fa-solid fa-right-from-bracket"></i>
+
+                Logout
+
+            </button>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- MAIN -->
+
+    <main class="ml-64 flex-1">
+
+
+        <!-- TOP BAR -->
+
+        <header class="bg-white border-b px-8 py-5 flex justify-between items-center sticky top-0 z-40">
+
+            <div>
+
+                <h2 class="text-2xl font-bold text-slate-800">
+                    Admin Dashboard
+                </h2>
+
+                <p class="text-sm text-slate-500">
+                    Manage Campus Connect
+                </p>
+
+            </div>
+
+
+            <div class="flex items-center gap-4">
+
+                <div class="text-right">
+
+                    <p class="font-semibold">
+                        Administrator
+                    </p>
+
+                    <p class="text-xs text-slate-500">
+                        admin@gmail.com
+                    </p>
+
+                </div>
+
+
+                <div class="w-11 h-11 rounded-full
+                            bg-gradient-to-r from-purple-600 to-indigo-600
+                            text-white flex items-center justify-center">
+
+                    <i class="fa-solid fa-user-shield"></i>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- CONTENT -->
+
+        <section class="p-8">
+
+
+            <!-- WELCOME -->
+
+            <div class="mb-8">
+
+                <h1 class="text-3xl font-bold">
+                    Welcome back, Admin 👋
+                </h1>
+
+                <p class="text-slate-500 mt-1">
+                    Here's what's happening across your campus.
+                </p>
+
+            </div>
+
+
+
+            <!-- STATISTICS -->
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+
+                <div class="stat-card bg-white p-6 rounded-2xl shadow">
+
+                    <div class="flex justify-between">
+
+                        <div>
+
+                            <p class="text-slate-500">
+                                Total Students
+                            </p>
+
+                            <h2 class="text-3xl font-bold mt-2">
+                                2,450
+                            </h2>
+
+                        </div>
+
+                        <div class="w-12 h-12 rounded-xl bg-indigo-100
+                                    text-indigo-600 flex items-center justify-center">
+
+                            <i class="fa-solid fa-users text-xl"></i>
+
+                        </div>
+
+                    </div>
+
+                    <p class="text-green-500 text-sm mt-4">
+                        ↑ 12% this month
+                    </p>
+
+                </div>
+
+
+
+                <div class="stat-card bg-white p-6 rounded-2xl shadow">
+
+                    <div class="flex justify-between">
+
+                        <div>
+
+                            <p class="text-slate-500">
+                                Events
+                            </p>
+
+                            <h2 class="text-3xl font-bold mt-2">
+                                28
+                            </h2>
+
+                        </div>
+
+                        <div class="w-12 h-12 rounded-xl bg-purple-100
+                                    text-purple-600 flex items-center justify-center">
+
+                            <i class="fa-solid fa-calendar text-xl"></i>
+
+                        </div>
+
+                    </div>
+
+                    <p class="text-green-500 text-sm mt-4">
+                        6 upcoming
+                    </p>
+
+                </div>
+
+
+
+                <div class="stat-card bg-white p-6 rounded-2xl shadow">
+
+                    <div class="flex justify-between">
+
+                        <div>
+
+                            <p class="text-slate-500">
+                                Placements
+                            </p>
+
+                            <h2 class="text-3xl font-bold mt-2">
+                                42
+                            </h2>
+
+                        </div>
+
+                        <div class="w-12 h-12 rounded-xl bg-green-100
+                                    text-green-600 flex items-center justify-center">
+
+                            <i class="fa-solid fa-briefcase text-xl"></i>
+
+                        </div>
+
+                    </div>
+
+                    <p class="text-green-500 text-sm mt-4">
+                        8 new opportunities
+                    </p>
+
+                </div>
+
+
+
+                <div class="stat-card bg-white p-6 rounded-2xl shadow">
+
+                    <div class="flex justify-between">
+
+                        <div>
+
+                            <p class="text-slate-500">
+                                Feedback
+                            </p>
+
+                            <h2 class="text-3xl font-bold mt-2">
+                                126
+                            </h2>
+
+                        </div>
+
+                        <div class="w-12 h-12 rounded-xl bg-pink-100
+                                    text-pink-600 flex items-center justify-center">
+
+                            <i class="fa-solid fa-comments text-xl"></i>
+
+                        </div>
+
+                    </div>
+
+                    <p class="text-orange-500 text-sm mt-4">
+                        18 unread
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- QUICK ACTIONS -->
+
+            <div class="mt-10">
+
+                <h2 class="text-xl font-bold mb-4">
+                    Quick Actions
+                </h2>
+
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+
+
+                    <button onclick="addEvent()"
+                        class="bg-gradient-to-r from-indigo-600 to-purple-600
+                               text-white p-6 rounded-2xl text-left shadow-lg">
+
+                        <i class="fa-solid fa-calendar-plus text-2xl"></i>
+
+                        <h3 class="font-bold text-lg mt-4">
+                            Add Event
+                        </h3>
+
+                        <p class="text-sm opacity-80">
+                            Create new campus event
+                        </p>
+
+                    </button>
+
+
+
+                    <button onclick="addNews()"
+                        class="bg-white p-6 rounded-2xl text-left shadow hover:shadow-lg">
+
+                        <i class="fa-solid fa-newspaper text-purple-600 text-2xl"></i>
+
+                        <h3 class="font-bold text-lg mt-4">
+                            Publish News
+                        </h3>
+
+                        <p class="text-sm text-slate-500">
+                            Publish campus announcement
+                        </p>
+
+                    </button>
+
+
+
+                    <button onclick="addNotes()"
+                        class="bg-white p-6 rounded-2xl text-left shadow hover:shadow-lg">
+
+                        <i class="fa-solid fa-book-open text-indigo-600 text-2xl"></i>
+
+                        <h3 class="font-bold text-lg mt-4">
+                            Upload Notes
+                        </h3>
+
+                        <p class="text-sm text-slate-500">
+                            Add subject material
+                        </p>
+
+                    </button>
+
+
+
+                    <button onclick="addPlacement()"
+                        class="bg-white p-6 rounded-2xl text-left shadow hover:shadow-lg">
+
+                        <i class="fa-solid fa-briefcase text-green-600 text-2xl"></i>
+
+                        <h3 class="font-bold text-lg mt-4">
+                            Add Placement
+                        </h3>
+
+                        <p class="text-sm text-slate-500">
+                            Add job opportunity
+                        </p>
+
+                    </button>
+
+
+                </div>
+
+            </div>
+
+
+
+            <!-- MANAGEMENT -->
+
+            <div class="mt-10 bg-white rounded-2xl shadow overflow-hidden">
+
+                <div class="p-6 border-b">
+
+                    <h2 class="text-xl font-bold">
+                        Recent Activity
+                    </h2>
+
+                </div>
+
+
+                <div class="divide-y">
+
+
+                    <div class="p-5 flex justify-between items-center">
+
+                        <div class="flex gap-4 items-center">
+
+                            <div class="w-10 h-10 rounded-full bg-purple-100
+                                        text-purple-600 flex items-center justify-center">
+
+                                <i class="fa-solid fa-calendar"></i>
+
+                            </div>
+
+                            <div>
+
+                                <p class="font-semibold">
+                                    Tech Fest 2026 added
+                                </p>
+
+                                <p class="text-sm text-slate-500">
+                                    Admin • 10 minutes ago
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <span class="text-green-500 text-sm">
+                            Published
+                        </span>
+
+                    </div>
+
+
+
+                    <div class="p-5 flex justify-between items-center">
+
+                        <div class="flex gap-4 items-center">
+
+                            <div class="w-10 h-10 rounded-full bg-indigo-100
+                                        text-indigo-600 flex items-center justify-center">
+
+                                <i class="fa-solid fa-newspaper"></i>
+
+                            </div>
+
+                            <div>
+
+                                <p class="font-semibold">
+                                    Campus announcement published
+                                </p>
+
+                                <p class="text-sm text-slate-500">
+                                    Admin • 1 hour ago
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <span class="text-green-500 text-sm">
+                            Published
+                        </span>
+
+                    </div>
+
+
+
+                    <div class="p-5 flex justify-between items-center">
+
+                        <div class="flex gap-4 items-center">
+
+                            <div class="w-10 h-10 rounded-full bg-orange-100
+                                        text-orange-600 flex items-center justify-center">
+
+                                <i class="fa-solid fa-comment"></i>
+
+                            </div>
+
+                            <div>
+
+                                <p class="font-semibold">
+                                    New student feedback received
+                                </p>
+
+                                <p class="text-sm text-slate-500">
+                                    Anonymous • 2 hours ago
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <span class="text-orange-500 text-sm">
+                            Review
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ADMIN MODULES -->
+
+            <div class="mt-10 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+
+                <div id="students"
+                    class="bg-white p-6 rounded-2xl shadow">
+
+                    <i class="fa-solid fa-users text-indigo-600 text-2xl"></i>
+
+                    <h3 class="text-xl font-bold mt-4">
+                        Student Management
+                    </h3>
+
+                    <p class="text-slate-500 mt-2">
+                        View, manage and monitor registered students.
+                    </p>
+
+                    <button class="mt-5 bg-indigo-600 text-white px-5 py-2 rounded-lg">
+                        Manage Students
+                    </button>
+
+                </div>
+
+
+
+                <div id="events"
+                    class="bg-white p-6 rounded-2xl shadow">
+
+                    <i class="fa-solid fa-calendar-days text-purple-600 text-2xl"></i>
+
+                    <h3 class="text-xl font-bold mt-4">
+                        Event Management
+                    </h3>
+
+                    <p class="text-slate-500 mt-2">
+                        Add, edit and delete campus events.
+                    </p>
+
+                    <button onclick="addEvent()"
+                        class="mt-5 bg-purple-600 text-white px-5 py-2 rounded-lg">
+                        Manage Events
+                    </button>
+
+                </div>
+
+
+
+                <div id="news"
+                    class="bg-white p-6 rounded-2xl shadow">
+
+                    <i class="fa-solid fa-newspaper text-blue-600 text-2xl"></i>
+
+                    <h3 class="text-xl font-bold mt-4">
+                        News Management
+                    </h3>
+
+                    <p class="text-slate-500 mt-2">
+                        Publish and manage campus news.
+                    </p>
+
+                    <button onclick="addNews()"
+                        class="mt-5 bg-blue-600 text-white px-5 py-2 rounded-lg">
+                        Manage News
+                    </button>
+
+                </div>
+
+
+
+                <div id="notes"
+                    class="bg-white p-6 rounded-2xl shadow">
+
+                    <i class="fa-solid fa-book text-green-600 text-2xl"></i>
+
+                    <h3 class="text-xl font-bold mt-4">
+                        Notes Management
+                    </h3>
+
+                    <p class="text-slate-500 mt-2">
+                        Upload and manage study materials.
+                    </p>
+
+                    <button onclick="addNotes()"
+                        class="mt-5 bg-green-600 text-white px-5 py-2 rounded-lg">
+                        Manage Notes
+                    </button>
+
+                </div>
+
+
+
+                <div id="placements"
+                    class="bg-white p-6 rounded-2xl shadow">
+
+                    <i class="fa-solid fa-briefcase text-orange-600 text-2xl"></i>
+
+                    <h3 class="text-xl font-bold mt-4">
+                        Placement Management
+                    </h3>
+
+                    <p class="text-slate-500 mt-2">
+                        Manage companies and placement opportunities.
+                    </p>
+
+                    <button onclick="addPlacement()"
+                        class="mt-5 bg-orange-600 text-white px-5 py-2 rounded-lg">
+                        Manage Placements
+                    </button>
+
+                </div>
+
+
+
+                <div id="clubs"
+                    class="bg-white p-6 rounded-2xl shadow">
+
+                    <i class="fa-solid fa-people-group text-pink-600 text-2xl"></i>
+
+                    <h3 class="text-xl font-bold mt-4">
+                        Club Management
+                    </h3>
+
+                    <p class="text-slate-500 mt-2">
+                        Manage campus clubs and activities.
+                    </p>
+
+                    <button class="mt-5 bg-pink-600 text-white px-5 py-2 rounded-lg">
+                        Manage Clubs
+                    </button>
+
+                </div>
+
+
+
+                <div id="lost"
+                    class="bg-white p-6 rounded-2xl shadow">
+
+                    <i class="fa-solid fa-box text-red-600 text-2xl"></i>
+
+                    <h3 class="text-xl font-bold mt-4">
+                        Lost & Found
+                    </h3>
+
+                    <p class="text-slate-500 mt-2">
+                        Review and manage reported lost items.
+                    </p>
+
+                    <button class="mt-5 bg-red-600 text-white px-5 py-2 rounded-lg">
+                        Manage Reports
+                    </button>
+
+                </div>
+
+
+
+                <div id="feedback"
+                    class="bg-white p-6 rounded-2xl shadow">
+
+                    <i class="fa-solid fa-comments text-cyan-600 text-2xl"></i>
+
+                    <h3 class="text-xl font-bold mt-4">
+                        Feedback
+                    </h3>
+
+                    <p class="text-slate-500 mt-2">
+                        Review anonymous student feedback.
+                    </p>
+
+                    <button class="mt-5 bg-cyan-600 text-white px-5 py-2 rounded-lg">
+                        View Feedback
+                    </button>
+
+                </div>
+
+
+
+                <div id="mails"
+                    class="bg-white p-6 rounded-2xl shadow">
+
+                    <i class="fa-solid fa-envelope text-violet-600 text-2xl"></i>
+
+                    <h3 class="text-xl font-bold mt-4">
+                        Student Mails
+                    </h3>
+
+                    <p class="text-slate-500 mt-2">
+                        Send announcements and messages to students.
+                    </p>
+
+                    <button class="mt-5 bg-violet-600 text-white px-5 py-2 rounded-lg">
+                        Manage Mails
+                    </button>
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+    </main>
+
+</div>
+
+
+
+<script>
+
+function logout() {
+
+    localStorage.removeItem("campusUserRole");
+    localStorage.removeItem("campusUserEmail");
+
+    if (typeof auth !== "undefined") {
+        auth.signOut();
+    }
+
+    window.location.href = "web log page 2.html";
+}
+
+
+function addEvent() {
+    alert("Add Event module opened");
+}
+
+function addNews() {
+    alert("Publish News module opened");
+}
+
+function addNotes() {
+    alert("Upload Notes module opened");
+}
+
+function addPlacement() {
+    alert("Add Placement module opened");
+}
+
+</script>
+
+
+</body>
+</html>

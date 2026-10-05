@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign in | Campus Connect</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <style>
+    body.login-page { min-height: 100vh; display: grid; place-items: center; padding: 2rem; background: radial-gradient(circle at 10% 10%, #99f6e4 0, transparent 28%), linear-gradient(135deg, #134e4a, #155e75); }
+    .login-shell { width: min(920px, 100%); display: grid; grid-template-columns: 1fr 1fr; overflow: hidden; border: 1px solid rgba(255,255,255,.3); border-radius: 28px; background: rgba(255,255,255,.92); box-shadow: 0 28px 80px rgba(2,44,44,.28); }
+    .login-intro { display: flex; flex-direction: column; justify-content: space-between; padding: 3rem; color: white; background: linear-gradient(145deg, #0f766e, #0e7490); }
+    .login-intro h1 { margin: 2rem 0 .8rem; font-size: clamp(2.4rem, 5vw, 4rem); line-height: .98; }
+    .login-intro p { max-width: 28rem; color: rgba(255,255,255,.82); line-height: 1.7; }
+    .login-kicker { font-size: .75rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+    .login-mark { width: 54px; height: 54px; display: grid; place-items: center; border-radius: 17px; background: rgba(255,255,255,.18); font-weight: 800; }
+    .login-form-panel { padding: 3rem; }
+    .login-form-panel h2 { margin: 0 0 .5rem; color: #173b3a; font-size: 2rem; }
+    .login-form-panel > p { margin: 0 0 2rem; color: #607775; }
+    .field { display: grid; gap: .45rem; margin-bottom: 1rem; }
+    .field label { color: #173b3a; font-size: .85rem; font-weight: 700; }
+    .field input { width: 100%; padding: .9rem 1rem; border: 1px solid #cbded9; border-radius: 12px; outline: none; font: inherit; }
+    .field input:focus { border-color: #0f766e; box-shadow: 0 0 0 4px rgba(15,118,110,.12); }
+    .submit-btn { width: 100%; margin-top: .5rem; padding: .95rem 1rem; border: 0; border-radius: 12px; background: #0f766e; color: white; font: inherit; font-weight: 800; cursor: pointer; }
+    .submit-btn:hover { background: #115e59; transform: translateY(-1px); }
+    .login-note { min-height: 1.3rem; margin: 1rem 0 0; color: #b45309; font-size: .86rem; }
+    @media (max-width: 700px) { .login-shell { grid-template-columns: 1fr; } .login-intro { padding: 2rem; } .login-intro h1 { margin-top: 1.5rem; } .login-form-panel { padding: 2rem; } }
+  </style>
+</head>
+<body class="login-page">
+  <main class="login-shell">
+    <section class="login-intro">
+      <div>
+        <div class="login-mark">CC</div>
+        <p class="login-kicker">Student portal</p>
+        <h1>Campus life, in sync.</h1>
+        <p>One calm place for your classes, events, notes, opportunities, and campus community.</p>
+      </div>
+      <small>Secure access for Campus Connect members</small>
+    </section>
+    <section class="login-form-panel">
+      <h2>Welcome back</h2>
+      <p>Sign in to open your personalized dashboard.</p>
+      <form id="auth-form">
+        <div class="field"><label for="email">Email address</label><input id="email" type="email" autocomplete="email" placeholder="you@example.com" required></div>
+        <div class="field"><label for="password">Password</label><input id="password" type="password" autocomplete="current-password" placeholder="Enter your password" required></div>
+        <button class="submit-btn" type="submit"><i class="fa-solid fa-arrow-right-to-bracket"></i> Sign in</button>
+        <p id="login-note" class="login-note" role="status"></p>
+      </form>
+    </section>
+  </main>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script>
+    const firebaseConfig = { apiKey: "AIzaSyDGw1lYFmNU9kyoc73J2d4I13QItYgeIG4", authDomain: "collage-erpsys.firebaseapp.com", projectId: "collage-erpsys", storageBucket: "collage-erpsys.firebasestorage.app", messagingSenderId: "699344773402", appId: "1:699344773402:web:cdbc3e76c2567222a38ca3" };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const form = document.getElementById('auth-form');
+    const note = document.getElementById('login-note');
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const email = document.getElementById('email').value.trim().toLowerCase();
+      const password = document.getElementById('password').value;
+      note.textContent = '';
+
+      if (email === 'raj@gmail.com' && password === '1234567') {
+        localStorage.setItem('campusUserRole', 'student');
+        localStorage.setItem('campusUserEmail', email);
+        window.location.href = 'index.html';
+        return;
+      }
+
+      if (email === 'admin@gmail.com' && password === '1234567') {
+        localStorage.setItem('campusUserRole', 'admin');
+        localStorage.setItem('campusUserEmail', email);
+        window.location.href = 'admin.html';
+        return;
+      }
+
+      try {
+        await auth.signInWithEmailAndPassword(email, password);
+        localStorage.setItem('campusUserRole', 'student');
+        localStorage.setItem('campusUserEmail', email);
+        window.location.href = 'index.html';
+      } catch (error) {
+        note.textContent = 'That email or password is not recognized.';
+      }
+    });
+  </script>
+</body>
+</html>
